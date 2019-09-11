@@ -8,7 +8,7 @@
 export default {
   name: "Home",
   serverPrefetch() {
-    console.log("Corriendo en el servidor");
+    // console.log("Corriendo en el servidor");
   }
 };
 </script>

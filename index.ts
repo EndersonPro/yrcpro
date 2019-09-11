@@ -22,12 +22,11 @@ if (isProd) {
     runInNewContext: false
   });
 } else {
-
+  // TODO: Configuracion para el desarrollo hotreloading
 }
 
 // renderer.renderToString()
 
-// //TODO: Configuracion para desarrollo
 // const renderer = createRenderer({
 //   template: readFileSync(
 //     path.join(__dirname, "app/index.template.html"),
@@ -38,14 +37,15 @@ if (isProd) {
 const server: Server = Server.instance;
 
 server.app.use("/dist", express.static(path.join(__dirname, "dist")));
-
+server.app.get('/favicon.ico', (req, res) => res.status(204));
 server.app.get("*", (req: Request, res: Response) => {
   const context = { url: req.url, ...env.context };
+  console.log(context);
   //@ts-ignore
   renderer.renderToString(context, (err, html) => {
-    console.log(html);
+    // console.log(html);
     if (err) {
-      console.error(err);
+      // console.error(err);
       // console.log(err)
       res.status(500).end("Internal Server Error");
       return;
