@@ -17,7 +17,7 @@ if (isProd) {
   const clientManifest = require("./dist/vue-ssr-client-manifest.json");
   const serverBundle = require("./dist/vue-ssr-server-bundle.json");
   renderer = createBundleRenderer(serverBundle, {
-    // template,
+    template,
     clientManifest,
     runInNewContext: false
   });
@@ -40,7 +40,7 @@ server.app.use("/dist", express.static(path.join(__dirname, "dist")));
 server.app.get('/favicon.ico', (req, res) => res.status(204));
 server.app.get("*", (req: Request, res: Response) => {
   const context = { url: req.url, ...env.context };
-  console.log(context);
+  // console.log(context);
   //@ts-ignore
   renderer.renderToString(context, (err, html) => {
     // console.log(html);
