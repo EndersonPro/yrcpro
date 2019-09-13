@@ -45,7 +45,7 @@ server.app.get("*", (req: Request, res: Response) => {
   renderer.renderToString(context, (err, html) => {
     // console.log(html);
     if (err) {
-      // console.error(err);
+      console.error(err);
       // console.log(err)
       res.status(500).end("Internal Server Error");
       return;

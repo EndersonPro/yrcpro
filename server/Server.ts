@@ -1,10 +1,9 @@
 import express, { Application } from "express";
 import socketIO, { Server as IOServer, Socket } from "socket.io";
 import http, { Server as HTTPServer } from "http";
-import * as socket from '../sockets/Socket';
+import * as socket from "../sockets/Socket";
 
 export class Server {
-
   private static _instance: Server;
 
   public app: Application;
@@ -17,7 +16,7 @@ export class Server {
     this.port = 9000;
     this.httpServer = new HTTPServer(this.app);
     this.io = socketIO(this.httpServer);
-    //   this.listenSockets();
+    this.listenSockets();
   }
 
   public static get instance() {
