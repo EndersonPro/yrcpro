@@ -10,12 +10,12 @@ export function createRouter() {
     routes: [
       {
         path: "/",
-        component: () => import("../components/Home.vue")
+        component: () => import("../views/Home.vue")
       },
-      {
-        path: "/test/:id",
-        component: () => import("../components/Test.vue")
-      }
+      // {
+      //   path: "/test/:id",
+      //   component: () => import("../components/Test.vue")
+      // }
     ]
   });
 }

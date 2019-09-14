@@ -1,32 +1,27 @@
 <template>
-  <div class="container">
-    <h3>App</h3>
-    <h5>{{io}}</h5>
-    <ul>
-      <li><router-link to="/test/1"> Test 1 </router-link></li>
-      <li><router-link to="/test/2"> Test 2 </router-link></li>
-    </ul>
+<div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#"><strong>YRC</strong>PRO</a>
+</nav>
+  <div class="container mt-3">
     <router-view></router-view>
   </div>
+</div>
 </template>
 
 <script>
-
-import ioStoreModule from './store/modules/io';
+import ioStoreModule from "./store/modules/io";
 
 export default {
-  name:"app",
-  computed:{
-    io(){
-      return this.$store.state.io
+  name: "app",
+  computed: {
+    io() {
+      return this.$store.state.io;
     }
   }
 };
 </script>
 
 <style lang="scss">
-.container{
-  height: 100vh;
-  background-color: red;
-}
+  @import "./bootstrap.min.css"
 </style>

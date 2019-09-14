@@ -6,6 +6,7 @@ import { sync } from "vuex-router-sync";
 
 import VueSocketIOExt from "vue-socket.io-extended";
 import io from "socket.io-client";
+import VueRx from 'vue-rx';
 
 export function createApp() {
   const store = createStore();
@@ -14,6 +15,7 @@ export function createApp() {
   const socket = io("http://localhost:8000/");
 
   Vue.use(VueSocketIOExt, socket);
+  Vue.use(VueRx);
 
   sync(store, router);
   const app = new Vue({
