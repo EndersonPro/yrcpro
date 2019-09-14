@@ -1,13 +1,23 @@
 <template>
-  <div>
+  <div class>
     <audio ref="audioRef">
       <source :src="audio_src" type="audio/mp3" />Este navegador no soporta
       <code>audio</code>
     </audio>
-    <div class="row d-flex justify-content-between flex-column align-items-center">
-      <div class="col">
-        <button @click="play">Play</button>
-        <button @click="pause">Pausa</button>
+    <div class="row control_container d-flex justify-content-between align-items-center p-2">
+      <div class="col-sm-3">
+        <img src="https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg" class="img-fluid" alt />
+      </div>
+      <div class="col-sm-3 d-flex justify-content-center align-items-center flex-column">
+        <h5 class="_currentTime">{{ state.readableCurrentTime }}</h5>
+        <h6 class="_duration">{{ state.readableDuration }}</h6>
+      </div>
+      <div class="col-sm-3">
+        <button class="btn btn-primary circle_" @click="togglePlay">
+          <i v-if="!state.playing" class="material-icons">play_arrow</i>
+          <i v-else class="material-icons">pause</i>
+        </button>
+        <!-- <button class="btn btn-secondary" @click="pause">Pausa</button> -->
       </div>
     </div>
   </div>
@@ -16,6 +26,7 @@
 <script>
 import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import * as moment from "moment";
 
 export default {
   name: "MPControlBar",
@@ -55,6 +66,9 @@ export default {
   mounted() {
     //   Creando instancia solo del lado del cliente
     this.audioObj = new Audio();
+
+    //Inmediantamente se reciba una entrada de audio hacia el componente se reproduce
+    this.playStream(this.audio_src);
   },
   methods: {
     playStream(url) {
@@ -64,8 +78,14 @@ export default {
           console.log(event);
         });
     },
+    togglePlay() {
+      if (!this.state.playing) {
+        this.play();
+      } else {
+        this.pause();
+      }
+    },
     play() {
-      this.playStream(this.audio_src);
       this.audioObj.play();
     },
     pause() {
@@ -79,7 +99,7 @@ export default {
       switch (type) {
         case "canplay":
           this.state.duration = this.audioObj.duration;
-          //   this.state.readableDuration = this.formatTime(this.state.duration);
+          this.state.readableDuration = this.formatTime(this.state.duration);
           this.state.canplay = true;
           break;
         case "playing":
@@ -90,9 +110,9 @@ export default {
           break;
         case "timeupdate":
           this.state.currentTime = this.audioObj.currentTime;
-          //   this.state.readableCurrentTime = this.formatTime(
-          //     this.state.currentTime
-          //   );
+          this.state.readableCurrentTime = this.formatTime(
+            this.state.currentTime
+          );
           break;
         case "error":
           this.resetState();
@@ -139,7 +159,26 @@ export default {
       events.forEach(event => {
         obj.removeEventListener(event, handler);
       });
+    },
+    formatTime(time, format = "mm:ss") {
+      const momentTime = time * 1000;
+      return moment.utc(momentTime).format(format);
     }
   }
 };
 </script>
+
+<style lang="scss">
+.control_container {
+  width: 100%;
+  img {
+    height: 85px;
+  }
+  .circle_ {
+    border-radius: 50%;
+  }
+  ._duration {
+    color: rgba(26, 26, 26, 0.5);
+  }
+}
+</style>

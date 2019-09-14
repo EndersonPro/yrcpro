@@ -39,9 +39,9 @@ export default {
 </script>
 <style lang="scss">
 .mp_control_bar {
-  height: 100px;
+  // height: 100px;
   width: 100%;
-  background-color: magenta;
+  background-color: rgba(26,26,26,.1);
   position: absolute;
   bottom: 0;
   left: 0;
