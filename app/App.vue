@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h3>App</h3>
     <h5>{{io}}</h5>
     <ul>
@@ -23,3 +23,10 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.container{
+  height: 100vh;
+  background-color: red;
+}
+</style>
