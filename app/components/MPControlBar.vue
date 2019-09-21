@@ -6,7 +6,21 @@
     </audio>
     <div class="row control_container d-flex justify-content-between align-items-center p-2">
       <div class="col-sm-3">
-        <img src="https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg" class="img-fluid" alt />
+        <img src="https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg" class="img-fluid" />
+      </div>
+      <div class="col-sm">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            :style="{
+                width: (state.currentTime / state.duration) * 100 + '%'}
+              "
+            :aria-valuenow="25"
+            :aria-valuemin="0"
+            :aria-valuemax="100"
+          ></div>
+        </div>
       </div>
       <div class="col-sm-3 d-flex justify-content-center align-items-center flex-column">
         <h5 class="_currentTime">{{ state.readableCurrentTime }}</h5>
@@ -30,12 +44,7 @@ import * as moment from "moment";
 
 export default {
   name: "MPControlBar",
-  props: {
-    audio_src: {
-      type: String,
-      required: true
-    }
-  },
+  props: ["audio_src"],
   data() {
     return {
       stop$: new Subject(),
@@ -68,7 +77,22 @@ export default {
     this.audioObj = new Audio();
 
     //Inmediantamente se reciba una entrada de audio hacia el componente se reproduce
-    this.playStream(this.audio_src);
+    // this.playStream(this.audio_src);
+    const source = this.audio_src.data.audiostream[
+      this.audio_src.data.audiostream.length - 1
+    ].url;
+    console.log(source);
+    this.playStream(source);
+  },
+  watch: {
+    audio_src: function() {
+      console.log(this.audio_src);
+      const source = this.audio_src.data.audiostream[
+        this.audio_src.data.audiostream.length - 1
+      ].url;
+      console.log(source);
+      this.playStream(source);
+    }
   },
   methods: {
     playStream(url) {

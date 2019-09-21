@@ -1,22 +1,75 @@
 <template>
   <div>
-    <MPControlBar class="mp_control_bar" :audio_src="src" />
+    <div class="row">
+      <div class="col-md-12 col-sm-12 d-flex justify-content-center">
+        <form class="form-inline row my-2 my-lg-0" @submit.prevent="search">
+          <input
+            class="form-control"
+            type="search"
+            v-model="textSearch"
+            placeholder="Buscar canción.."
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-sm-0 ml-2" type="submit">Buscar</button>
+        </form>
+      </div>
+      <div class="col"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <ul v-if="songs.length > 0" class="list-group" style="overflow: auto; height:60vh;">
+          <li
+            :key="i"
+            v-for="(song,i) in songs"
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            {{ song.title}}
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge badge-secondary">{{ song.duration }}</span>
+              <button
+                class="btn btn-outline-secondary"
+                style="padding: .1em;"
+                @click="playSong(song)"
+              >
+                <i class="material-icons" style="font-size: 23px;">play_arrow</i>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <MPControlBar class="mp_control_bar" :audio_src="currentSong" />
   </div>
 </template>
 
 <script>
 import MPControlBar from "../components/MPControlBar";
+import { mapActions } from "vuex";
+import {
+  LOAD_SONGS,
+  SEARCH_SONGS,
+  SEARCH_RESOURCE_SONG
+} from "../store/types/actions-types";
+import { initialCurrentSong } from "../store/store";
 
 export default {
   name: "Home",
   data() {
     return {
-      src:
-        "https://r2---sn-hv8pnu5gjv-c59l.googlevideo.com/videoplayback?expire=1568450857&ei=yVR8Xf2kCsGBir4PodWW6Ag&ip=198.37.123.37&id=o-AESYrcs2UXPUrslc0-YKmvWjIA3Ant8Li4DdEGmap7H7&itag=251&source=youtube&requiressl=yes&mime=audio%2Fwebm&gir=yes&clen=4396007&dur=256.581&lmt=1552083972950728&fvip=2&keepalive=yes&c=WEB&txp=5511222&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cgir%2Cclen%2Cdur%2Clmt&sig=ALgxI2wwRAIgCqfBhwacns8OO7K3ZpITIhjAGlW969Y4GKhlSTJb4zwCIGaCNVnKjGcdfsI9IPXhLTsJVzODCdJTXv2SFl2GcZnv&ratebypass=yes&redirect_counter=1&rm=sn-vgqeey7l&req_id=aa6ecd77e551a3ee&cms_redirect=yes&ipbypass=yes&mip=167.0.100.12&mm=31&mn=sn-hv8pnu5gjv-c59l&ms=au&mt=1568429135&mv=m&mvi=1&pl=19&lsparams=ipbypass,mip,mm,mn,ms,mv,mvi,pl&lsig=AHylml4wRAIgXE1xhSLShKTcLcIZ4G1zaWriwISAP7uE_wosoDjKE7sCIGDLPAws9BrScWC35rYShmiz-DNIbQD7JjSt78m4o7Ur"
+      textSearch: "",
+      initialCurrentSong: initialCurrentSong
     };
   },
   components: {
     MPControlBar
+  },
+  computed: {
+    songs() {
+      return this.$store.getters.songs;
+    },
+    currentSong() {
+      return this.$store.getters.currentSong;
+    }
   },
   sockets: {
     connect() {
@@ -24,6 +77,19 @@ export default {
     }
   },
   methods: {
+    search: function() {
+      console.log(this.textSearch);
+      if (this.textSearch != "") {
+        this.searchSongs(this.textSearch);
+      }
+    },
+    playSong(song) {
+      this.searchResourceSong(song);
+    },
+    ...mapActions({
+      searchSongs: SEARCH_SONGS,
+      searchResourceSong: SEARCH_RESOURCE_SONG
+    }),
     handlerClickButton: function() {
       console.log("handler click button");
       this.$socket.client.emit("test", { msg: "Mensaje de prueba " });
@@ -41,7 +107,7 @@ export default {
 .mp_control_bar {
   // height: 100px;
   width: 100%;
-  background-color: rgba(26,26,26,.1);
+  background-color: rgba(26, 26, 26, 0.1);
   position: absolute;
   bottom: 0;
   left: 0;
