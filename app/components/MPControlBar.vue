@@ -5,28 +5,38 @@
       <code>audio</code>
     </audio>
     <div class="row control_container d-flex justify-content-between align-items-center p-2">
-      <div class="col-sm-3">
-        <img src="https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg" class="img-fluid" />
+      <div class="col-sm-3 col-md-2">
+        <img
+          :src="audio_src.data ? audio_src.data.imagen : 'https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg'"
+          class="img-fluid"
+        />
       </div>
-      <div class="col-sm">
-        <div class="progress">
-          <div
-            class="progress-bar"
-            role="progressbar"
-            :style="{
-                width: (state.currentTime / state.duration) * 100 + '%'}
-              "
-            :aria-valuenow="25"
-            :aria-valuemin="0"
-            :aria-valuemax="100"
-          ></div>
+      <div class="col-sm col-md-6 d-flex flex-column justify-content-center align-items-center">
+        <div class="row d-flex flex-column justify-content-center align-items-center">
+          <div class="col mb-2">
+            <div class="progress" style="height:.2rem">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                :style="{
+                  width: (state.currentTime / state.duration) * 100 + '%'}
+                "
+                :aria-valuenow="25"
+                :aria-valuemin="0"
+                :aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+          <div class="col">
+            <h6>{{ audio_src.data ? audio_src.data.titulo : '' }}</h6>
+          </div>
         </div>
       </div>
-      <div class="col-sm-3 d-flex justify-content-center align-items-center flex-column">
+      <div class="col-sm-2 col-md-2 d-flex justify-content-center align-items-center flex-column">
         <h5 class="_currentTime">{{ state.readableCurrentTime }}</h5>
         <h6 class="_duration">{{ state.readableDuration }}</h6>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2 col-md-2">
         <button class="btn btn-primary circle_" @click="togglePlay">
           <i v-if="!state.playing" class="material-icons">play_arrow</i>
           <i v-else class="material-icons">pause</i>
@@ -75,23 +85,24 @@ export default {
   mounted() {
     //   Creando instancia solo del lado del cliente
     this.audioObj = new Audio();
-
     //Inmediantamente se reciba una entrada de audio hacia el componente se reproduce
     // this.playStream(this.audio_src);
-    const source = this.audio_src.data.audiostream[
-      this.audio_src.data.audiostream.length - 1
-    ].url;
-    console.log(source);
-    this.playStream(source);
+    // const source = this.audio_src.data.audiostream[
+    //   this.audio_src.data.audiostream.length - 1
+    // ].url;
+    // console.log(source);
+    // this.playStream(source);
   },
   watch: {
     audio_src: function() {
       console.log(this.audio_src);
-      const source = this.audio_src.data.audiostream[
-        this.audio_src.data.audiostream.length - 1
-      ].url;
-      console.log(source);
-      this.playStream(source);
+      if (this.audio_src.data) {
+        const source = this.audio_src.data.audiostream[
+          this.audio_src.data.audiostream.length - 1
+        ].url;
+        console.log(source);
+        this.playStream(source);
+      }
     }
   },
   methods: {

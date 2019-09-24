@@ -15,7 +15,10 @@
       </div>
       <div class="col"></div>
     </div>
-    <div class="row">
+    <div v-if="isLoading" class="row d-flex justify-content-center align-items-center flex-column" style="height:50vh">
+      <Spinner />
+    </div>
+    <div v-else class="row">
       <div class="col-sm-12 col-md-6">
         <ul v-if="songs.length > 0" class="list-group" style="overflow: auto; height:60vh;">
           <li
@@ -44,31 +47,38 @@
 
 <script>
 import MPControlBar from "../components/MPControlBar";
+import Spinner from "../components/Spinner";
+
 import { mapActions } from "vuex";
 import {
   LOAD_SONGS,
   SEARCH_SONGS,
   SEARCH_RESOURCE_SONG
 } from "../store/types/actions-types";
-import { initialCurrentSong } from "../store/store";
 
 export default {
   name: "Home",
   data() {
     return {
       textSearch: "",
-      initialCurrentSong: initialCurrentSong
     };
   },
   components: {
-    MPControlBar
+    MPControlBar,
+    Spinner
   },
   computed: {
     songs() {
+      if (this.$store.getters.songs.length > 0) {
+        this.isSearch = false;
+      }
       return this.$store.getters.songs;
     },
     currentSong() {
       return this.$store.getters.currentSong;
+    },
+    isLoading(){
+      return this.$store.getters['ui/isLoading'];
     }
   },
   sockets: {
@@ -78,9 +88,9 @@ export default {
   },
   methods: {
     search: function() {
-      console.log(this.textSearch);
       if (this.textSearch != "") {
         this.searchSongs(this.textSearch);
+        // this.$store.dispatch('IS_LOADING', true);
       }
     },
     playSong(song) {

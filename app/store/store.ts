@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 import socketIO, { Server as IOServer, Socket } from "socket.io";
 import error from "./modules/error";
+import ui from "./modules/ui";
 import axios from "axios";
 import { RootState, Song } from "../interfaces/interfaces";
 import { SET_SONG } from "./types/mutations-types";
@@ -18,7 +19,7 @@ export const initialCurrentSong: Song = {
   duration: 0,
   id: "",
   image: "",
-  title: ""
+  titulo: ""
 };
 
 // Creando el manejador de estados...
@@ -30,18 +31,20 @@ const store: StoreOptions<RootState> = {
   },
   getters: {
     songs: (state: RootState) => state.songs,
-    currentSong: (state: RootState) => state.currentSong,
+    currentSong: (state: RootState) => state.currentSong
   },
   actions: {
     [LOAD_SONGS]({ commit }, data: Object) {
       commit(SET_SONG, data);
     },
     [SEARCH_SONGS]({ commit, dispatch }, nameSearch: String) {
+      dispatch("IS_LOADING", true);
       axios
         .get(`http://edy-api.noemec.com/api/search/${nameSearch}`)
         .then(({ data, status }) => {
           switch (status) {
             case 200:
+              dispatch("IS_LOADING", false);
               dispatch(LOAD_SONGS, data);
               break;
             default:
@@ -57,11 +60,11 @@ const store: StoreOptions<RootState> = {
     },
     [SEARCH_RESOURCE_SONG]({ commit, dispatch }, song: Song) {
       const { id } = song;
-      console.log("hola")
+      console.log("hola");
       axios
         .get(`http://edy-api.noemec.com/api/${id}`)
         .then(({ data, status }) => {
-          console.log(data)
+          console.log(data);
           switch (status) {
             case 200:
               commit(LOAD_SONG_PLAY, data);
@@ -83,7 +86,8 @@ const store: StoreOptions<RootState> = {
     }
   },
   modules: {
-    error
+    error,
+    ui
   }
 };
 
