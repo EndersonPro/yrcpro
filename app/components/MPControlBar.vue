@@ -1,12 +1,8 @@
 <template>
   <div>
-    <!-- <audio
-      ref="audioRef"
-      crossorigin="anonymous"
-      :src="'https://cors-anywhere.herokuapp.com/'+'https://r1---sn-vgqseney.googlevideo.com/videoplayback?expire=1569390525&ei=XauKXdXYDPKBzLUPpfWz-A0&ip=198.37.123.37&id=o-ABM_So-hyCB9Fxeot2La1KGoEMGtbe0IB_Q9q0xyK8xO&itag=251&source=youtube&requiressl=yes&mm=31%2C29&mn=sn-vgqseney%2Csn-vgqs7nl7&ms=au%2Crdu&mv=u&mvi=0&pl=24&mime=audio%2Fwebm&gir=yes&clen=4366852&dur=262.461&lmt=1540225846639042&mt=1569368365&fvip=1&keepalive=yes&c=WEB&txp=5511222&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl&lsig=AHylml4wRQIgchaFsIHIMud85c-GjHQKDbdCvCvsQBzl57Jx6G3jrEkCIQCPU1JRCzfg4WnNu4dwlT3gnVRBKOKXQsgNEMmRmBkGHQ%3D%3D&sig=ALgxI2wwRQIgTxrK11tfuIW5aHEm-Uf427aMssak8IC8dosyk3iO_G4CIQDkI1-dt0kURtEWR6BUkeOBnZJu_TpM74Qc58aMxwXQmQ==&ratebypass=yes'"
-    ></audio>-->
     <div class="row control_container d-flex justify-content-between align-items-center p-2">
       <canvas ref="canvas"></canvas>
+      <!-- <div ref="d3_container" class="d3_container"></div> -->
       <div class="col-sm-3 col-md-2">
         <img
           :src="audio_src.data ? audio_src.data.imagen : 'https://i.ytimg.com/vi/9qz7lMsFUJU/hqdefault.jpg'"
@@ -15,10 +11,10 @@
       </div>
       <div class="col-sm col-md-6 d-flex flex-column justify-content-center align-items-center">
         <div class="row d-flex flex-column justify-content-center align-items-center">
-          <div class="col mb-2">
+          <div class="col-12 mb-2">
             <div class="progress" style="height:.2rem">
               <div
-                class="progress-bar"
+                class="progress-bar bg-danger"
                 role="progressbar"
                 :style="{
                   width: (state.currentTime / state.duration) * 100 + '%'}
@@ -30,16 +26,16 @@
             </div>
           </div>
           <div class="col">
-            <h6>{{ audio_src.data ? audio_src.data.titulo : '' }}</h6>
+            <h6 style="color: white;">{{ audio_src.data ? audio_src.data.titulo : '' }}</h6>
           </div>
         </div>
       </div>
       <div class="col-sm-2 col-md-2 d-flex justify-content-center align-items-center flex-column">
-        <h5 class="_currentTime">{{ state.readableCurrentTime }}</h5>
+        <h5 style="color: white;" class="_currentTime">{{ state.readableCurrentTime }}</h5>
         <h6 class="_duration">{{ state.readableDuration }}</h6>
       </div>
       <div class="col-sm-2 col-md-2">
-        <button class="btn btn-primary circle_" @click="togglePlay">
+        <button class="btn btn-secondary circle_" @click="togglePlay">
           <i v-if="!state.playing" class="material-icons">play_arrow</i>
           <i v-else class="material-icons">pause</i>
         </button>
@@ -53,6 +49,7 @@
 import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import * as moment from "moment";
+import * as d3 from "d3";
 
 export default {
   name: "MPControlBar",
@@ -97,27 +94,73 @@ export default {
   },
   watch: {
     audio_src: function(newValue, olValue) {
-      console.log("WATCH", this.audio_src);
       if (this.audio_src) {
         const source = this.audio_src.data.audiostream[
           this.audio_src.data.audiostream.length - 1
         ].url;
         let observer = this.playStream(source);
 
-        console.log(this.audioObj);
-
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var audioCtx = new AudioContext();
         var analyser = audioCtx.createAnalyser();
         var audiosrcCtx = audioCtx.createMediaElementSource(this.audioObj);
         audiosrcCtx.connect(analyser);
         analyser.connect(audioCtx.destination);
 
-        analyser.fftSize = 512;
+        analyser.fftSize = 16384;
         var bufferLength = analyser.frequencyBinCount;
 
         var frequencyData = new Uint8Array(bufferLength);
 
         console.log("DATA frequency", frequencyData);
+
+        // D3 IMPLEMENTACION
+
+        // var svgHeight = "300";
+        // var svgWidth = "1200";
+        // var barPadding = "1";
+
+        // function createSvg(parent, height, width) {
+        //   return d3
+        //     .select(parent)
+        //     .append("svg")
+        //     .attr("height", height)
+        //     .attr("width", width);
+        // }
+
+        // var svg = createSvg(this.$refs["d3_container"], svgHeight, svgWidth);
+
+        // svg
+        //   .selectAll("rect")
+        //   .data(frequencyData)
+        //   .enter()
+        //   .append("rect")
+        //   .attr("x", function(d, i) {
+        //     return i * (svgWidth / frequencyData.length);
+        //   })
+        //   .attr("width", svgWidth / frequencyData.length - barPadding);
+
+        // function renderChart() {
+        //   requestAnimationFrame(renderChart);
+
+        //   // Copy frequency data to frequencyData array.
+        //   analyser.getByteFrequencyData(frequencyData);
+
+        //   // Update d3 chart with new data.
+        //   svg
+        //     .selectAll("rect")
+        //     .data(frequencyData)
+        //     .attr("y", function(d) {
+        //       return svgHeight - d;
+        //     })
+        //     .attr("height", function(d) {
+        //       return d;
+        //     })
+        //     .attr("fill", function(d) {
+        //       return "rgb(0, 0, " + d + ")";
+        //     });
+        // }
+
+        // END D3 IMPLEMENTACION
 
         // Canvas config
         var canvas = this.$refs["canvas"];
@@ -134,15 +177,57 @@ export default {
         let barHeight;
         let x = 0;
 
-        function renderFrame() {
-          // console.log("Me llama")
-          requestAnimationFrame(renderFrame);
+        // function renderFrame() {
+        //   // console.log("Me llama")
+        //   requestAnimationFrame(renderFrame);
+        //   x = 0;
+        //   analyser.getByteFrequencyData(frequencyData);
+        //   ctx.fillStyle = "rgba(0,0,0,.5)";
+        //   ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        //   let r, g, b;
+        //   let bars = 5;
+
+        //   for (let i = 0; i < bars; i++) {
+        //     barHeight = frequencyData[i] * 2.5;
+        //     if (frequencyData[i] > 210) {
+        //       r = 250;
+        //       g = 0;
+        //       b = 255;
+        //     } else if (frequencyData[i] > 200) {
+        //       r = 250;
+        //       g = 255;
+        //       b = 0;
+        //     } else if (frequencyData[i] > 190) {
+        //       r = 204;
+        //       g = 255;
+        //       b = 0;
+        //     } else if (frequencyData[i] > 180) {
+        //       r = 0;
+        //       g = 219;
+        //       b = 131;
+        //     } else {
+        //       r = 0;
+        //       g = 199;
+        //       b = 255;
+        //     }
+        //     ctx.fillStyle = `rgb(${r},${g},${b})`;
+        //     ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+        //     x += barWidth + 10; // Gives 10px space between each bar
+        //   }
+        // }
+
+        this.play();
+
+        // TODO: Pacere que se manejan en dos contextos diferentes con la linea siguiente si renderiza
+        // las barras
+        // this.$refs['audioRef'].play();
+        observer.subscribe(event => {
           x = 0;
           analyser.getByteFrequencyData(frequencyData);
-          ctx.fillStyle = "rgba(0,0,0,.5)";
+          ctx.fillStyle = "rgb(26,26,26)";
           ctx.fillRect(0, 0, WIDTH, HEIGHT);
           let r, g, b;
-          let bars = 30;
+          let bars = 128;
 
           for (let i = 0; i < bars; i++) {
             barHeight = frequencyData[i] * 2.5;
@@ -171,28 +256,14 @@ export default {
             ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
             x += barWidth + 10; // Gives 10px space between each bar
           }
-        }
 
-        this.play();
-
-        // distortion.connect(audioCtx.destination);
-
-        // console.log(source);
-        // TODO: Pacere que se manejan en dos contextos diferentes con la linea siguiente si renderiza
-        // las barras
-        // this.$refs['audioRef'].play();
-        observer.subscribe(event => {
-          renderFrame();
-          console.log("REPRODUCIENDO");
+          // renderChart();
+          // console.log("REPRODUCIENDO");
         });
       }
     }
   },
   methods: {
-    renderFrame() {
-      requestAnimationFrame(renderFrame);
-      x = 0;
-    },
     playStream(url) {
       return this.streamObservable(url).pipe(takeUntil(this.stop$));
     },
@@ -290,7 +361,7 @@ export default {
 
 <style lang="scss">
 .control_container {
-  position: relative;
+  // position: relative;
   width: 100%;
   img {
     height: 85px;
@@ -299,13 +370,21 @@ export default {
     border-radius: 50%;
   }
   ._duration {
-    color: rgba(26, 26, 26, 0.5);
+    // color: rgba(26, 26, 26, 0.5);
+    color: #fff;
   }
 }
 
 canvas {
   position: absolute;
+  width: 100%;
+  max-height: 100%;
+}
+
+.d3_container {
+  position: absolute;
   right: 0;
+  color: red;
   top: -250px;
   width: 250px;
   height: 200px;
