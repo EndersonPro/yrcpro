@@ -171,7 +171,7 @@ export default {
         const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
 
-        const barWidth = (WIDTH / bufferLength) * 13;
+        const barWidth = (WIDTH / bufferLength) * .3;
         console.log("barWidth", barWidth);
 
         let barHeight;
@@ -220,6 +220,7 @@ export default {
 
         // TODO: Pacere que se manejan en dos contextos diferentes con la linea siguiente si renderiza
         // las barras
+        // TODO: Ya lo solucioné no hacia falta el uso de requestAnimationFrame por eso el lag!
         // this.$refs['audioRef'].play();
         observer.subscribe(event => {
           x = 0;
@@ -228,7 +229,6 @@ export default {
           ctx.fillRect(0, 0, WIDTH, HEIGHT);
           let r, g, b;
           let bars = 128;
-
           for (let i = 0; i < bars; i++) {
             barHeight = frequencyData[i] * 2.5;
             if (frequencyData[i] > 210) {
@@ -254,11 +254,8 @@ export default {
             }
             ctx.fillStyle = `rgb(${r},${g},${b})`;
             ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
-            x += barWidth + 10; // Gives 10px space between each bar
+            x += barWidth + 10;
           }
-
-          // renderChart();
-          // console.log("REPRODUCIENDO");
         });
       }
     }
