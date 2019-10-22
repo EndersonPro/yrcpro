@@ -1,0 +1,77 @@
+[33mcommit 9ae8012fe4d0b5e82cb7345895e9c3388b06b4f3[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 24 22:42:24 2019 -0500
+
+    Unos comentarios para despues, por ahora es todo, :ok_hand: es hora de descansar
+
+[33mcommit dcff158252f27423fcf1381a9497806333a25c61[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 24 22:34:08 2019 -0500
+
+    Mejorando la renderizacion del visualizado de audio :ok_hand: IloveRxJS
+
+[33mcommit 27c9f316f24d6e1048d456ca3a47e396ddf899a6[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 24 20:27:25 2019 -0500
+
+    Espectro de audio funcionando, :ok_hand:
+
+[33mcommit 419b6688003f44ba5fcbc2aa2203b9a41c563581[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 24 16:46:37 2019 -0500
+
+    Pequeño Spinner agregado y configurado con la tienda :ok_hand: voy por :coffee:
+
+[33mcommit 6a4a5a163765e0fdcd22a99fe948386a68904036[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Fri Sep 20 22:54:19 2019 -0500
+
+    Un progreso significativo, ya listo y reproduzco las canciones, refactorizar y continuar :ok_hand:
+
+[33mcommit be2acb9810481d3f72a44ceb888a52f5725b1015[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Sat Sep 14 00:55:54 2019 -0500
+
+    Obteniendo los segundos de reproduccion actual, implementando TogglePlay :ok_hand:
+
+[33mcommit 0423d43512865443dc67dbba6a89ef0abebfd1d2[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Fri Sep 13 23:46:23 2019 -0500
+
+    Trabajando en el controlador de reproduccion de la musica con RxJS, de momento testeando con un resultado de la api de Python :ok_hand:
+
+[33mcommit 94856b9a7abe1f90fc4c0ef01fb156df9ff50b2a[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Fri Sep 13 21:16:02 2019 -0500
+
+    Modificando webpack config base, soporte para SCSS :ok_hand:
+
+[33mcommit ee65b296d9948b7de572ba1290a6ff3b5d9b565c[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Fri Sep 13 11:18:11 2019 -0500
+
+    Configurando SocketIO, comunicacion exitosa :ok_hand:
+
+[33mcommit a10f962011342a2989bb9059b2fbf0553f1c0f35[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Wed Sep 11 13:28:42 2019 -0500
+
+    Tienda funcionando :ok_hand:
+
+[33mcommit 426298490b841b037d1eed46eb2cec884fef8a06[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Wed Sep 11 12:59:53 2019 -0500
+
+    Router funcionando :ok_hand:
+
+[33mcommit 86de57c210d8ca571ad31a97ddf7d2ee1022c6b3[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 10 22:36:05 2019 -0500
+
+    Cambiando ext .js => .ts :ok_hand:
+
+[33mcommit 73396429a418e9397c90efefa3a0342b87acc43c[m
+Author: Enderson Vizcaino <enjaviga@gmail.com>
+Date:   Tue Sep 10 22:34:06 2019 -0500
+
+    Despues de varias horas y varios :coffee:, ya funciona el renderizado del lado del servidor, ahora implementar HotReloading para mejor desarrollo :tada:

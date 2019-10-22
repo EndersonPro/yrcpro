@@ -1,5 +1,5 @@
 {
-    "name": "server-yrc",
+    "name": "yrcpro",
     "version": "1.0.0",
     "description": "Servidor del Control Remoto de Youtube",
     "main": "index.ts",
@@ -7,6 +7,7 @@
     "license": "MIT",
     "scripts": {
         "ts-init": "tsc --init",
+        "start":"node server",
         "watch": "tsc --watch",
         "help": "ts-node --help",
         "serve": "nodemon -r esm index.ts",

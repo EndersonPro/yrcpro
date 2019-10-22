@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-md-12 col-sm-12 d-flex justify-content-center">
-        <form class="form-inline row my-2 my-lg-0" @submit.prevent="search">
+        <form class="form-inline row my-2 my-lg-0" @submit="search($event)">
           <input
             class="form-control"
             type="search"
@@ -15,7 +15,11 @@
       </div>
       <div class="col"></div>
     </div>
-    <div v-if="isLoading" class="row d-flex justify-content-center align-items-center flex-column" style="height:50vh">
+    <div
+      v-if="isLoading"
+      class="row d-flex justify-content-center align-items-center flex-column"
+      style="height:50vh"
+    >
       <Spinner />
     </div>
     <div v-else class="row">
@@ -60,7 +64,7 @@ export default {
   name: "Home",
   data() {
     return {
-      textSearch: "",
+      textSearch: ""
     };
   },
   components: {
@@ -77,8 +81,8 @@ export default {
     currentSong() {
       return this.$store.getters.currentSong;
     },
-    isLoading(){
-      return this.$store.getters['ui/isLoading'];
+    isLoading() {
+      return this.$store.getters["ui/isLoading"];
     }
   },
   sockets: {
@@ -87,7 +91,8 @@ export default {
     }
   },
   methods: {
-    search: function() {
+    search: function($event) {
+      $event.preventDefault();
       if (this.textSearch != "") {
         this.searchSongs(this.textSearch);
         // this.$store.dispatch('IS_LOADING', true);
@@ -122,4 +127,5 @@ export default {
   bottom: 0;
   left: 0;
 }
+
 </style>

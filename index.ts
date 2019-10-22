@@ -14,8 +14,8 @@ const template = readFileSync(
 let isProd: boolean = true;
 let renderer: any;
 if (isProd) {
-  const clientManifest = require("./dist/vue-ssr-client-manifest.json");
-  const serverBundle = require("./dist/vue-ssr-server-bundle.json");
+  const clientManifest = require("./dist/public/vue-ssr-client-manifest.json");
+  const serverBundle = require("./dist/public/vue-ssr-server-bundle.json");
   renderer = createBundleRenderer(serverBundle, {
     template,
     clientManifest,

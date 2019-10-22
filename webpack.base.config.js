@@ -4,30 +4,27 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: "./app/app.ts",
-  // output: {
-  //     path: path.resolve(__dirname, "./dist"),
-  //     publicPath: "/dist/",
-  //     filename: "build.[hash].js"
-  // },
+  output: {
+    path: path.resolve(__dirname, "./dist/public/"),
+    publicPath: "/dist/public/",
+    filename: "build.[hash].js"
+  },
   module: {
     rules: [
       {
         test: /\.vue$/,
         loader: "vue-loader",
-        // options: {
-        //   loaders: {
-        //     scss: "vue-style-loader!css-loader!sass-loader",
-        //     sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax"
-        //   }
-        // }
+        options: {
+          // preserveWhitespace: false,
+          loaders: {
+            scss: "vue-style-loader!css-loader!sass-loader",
+            sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax"
+          }
+        }
       },
       {
         test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ["vue-style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.js$/,

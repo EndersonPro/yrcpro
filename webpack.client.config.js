@@ -10,9 +10,9 @@ module.exports = merge(baseConfig, {
   entry: "./app/entry-client.ts",
   plugins: [new VueSSRClientPlugin()],
   output: {
-    path: path.resolve("./dist/"),
+    path: path.resolve("./dist/public/"),
     filename: "[name].[hash:8].js",
-    publicPath: "/dist/"
+    publicPath: "/dist/public/"
   },
   module: {
     rules: [

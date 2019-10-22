@@ -93,7 +93,8 @@ export default {
     // this.playStream(source);
   },
   watch: {
-    audio_src: function(newValue, olValue) {
+    audio_src: function(newValue, oldValue) {
+      // console.log(newValue, oldValue); 
       if (this.audio_src) {
         const source = this.audio_src.data.audiostream[
           this.audio_src.data.audiostream.length - 1
@@ -111,7 +112,7 @@ export default {
 
         var frequencyData = new Uint8Array(bufferLength);
 
-        console.log("DATA frequency", frequencyData);
+        // console.log("DATA frequency", frequencyData);
 
         // D3 IMPLEMENTACION
 
@@ -171,7 +172,7 @@ export default {
         const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
 
-        const barWidth = (WIDTH / bufferLength) * .3;
+        const barWidth = (WIDTH / bufferLength) * 0.5;
         console.log("barWidth", barWidth);
 
         let barHeight;
@@ -254,7 +255,7 @@ export default {
             }
             ctx.fillStyle = `rgb(${r},${g},${b})`;
             ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
-            x += barWidth + 10;
+            x += barWidth + 5;
           }
         });
       }
